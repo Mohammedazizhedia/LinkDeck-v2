@@ -38,7 +38,7 @@ jobs:
         run: |
           echo "🏗️ Creating project structure..."
           
-          # Root files
+          # Root files - CORRECTED settings.gradle.kts
           cat > settings.gradle.kts << 'EOF'
           pluginManagement {
               repositories {
@@ -47,7 +47,8 @@ jobs:
                   gradlePluginPortal()
               }
           }
-          dependencyResolution {
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
               repositories {
                   google()
                   mavenCentral()
@@ -63,6 +64,7 @@ jobs:
           plugins {
               id("com.android.application") version "8.2.0" apply false
               id("org.jetbrains.kotlin.android") version "1.9.20" apply false
+              id("org.jetbrains.kotlin.plugin.serialization") version "1.9.20" apply false
           }
           EOF
           
@@ -88,6 +90,8 @@ jobs:
           EOF
           
           echo "✅ Root files created"
+          echo "Contents of settings.gradle.kts:"
+          cat settings.gradle.kts
       
       - name: Create core-design module
         run: |
@@ -459,6 +463,7 @@ jobs:
           import androidx.compose.runtime.Composable
           import androidx.compose.ui.Alignment
           import androidx.compose.ui.Modifier
+          import androidx.compose.ui.graphics.Color
           import androidx.compose.ui.res.stringResource
           import androidx.compose.ui.text.style.TextAlign
           import androidx.compose.ui.unit.dp
